@@ -1,3 +1,6 @@
+import store from "../store.js";
+import { createDeleteTodoAction } from "../flux/index.js";
+
 class Todo {
   constructor(parent, { id, name, done }) {
     this.parent = parent;
@@ -10,8 +13,7 @@ class Todo {
     this.element.querySelector('.todo-remove-button').addEventListener(
       'click',
       event => {
-        console.log(event.target.getAttribute('data-todo-id'))
-        store.dispatch(createAddTodoAction({ name: this.form.value }));
+        store.dispatch(createDeleteTodoAction({ id: this.props.id }));
       },
       { once: true }
     );
