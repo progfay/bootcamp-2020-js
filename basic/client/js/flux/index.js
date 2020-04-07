@@ -32,6 +32,12 @@ export const createDeleteTodoAction = (todo_id) => ({
   payload: todo_id,
 });
 
+const UPDATE_TODO_STATUS_ACTION_TYPE = "Update todo status";
+export const createUpdateTodoStatusAction = (todo) => ({
+  type: UPDATE_TODO_STATUS_ACTION_TYPE,
+  payload: todo,
+});
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -77,6 +83,20 @@ const reducer = async (prevState, { type, payload }) => {
         const resp = await fetch(`${api}/${payload.id}`, { method: "DELETE" });
         return {
           todoList: prevState.todoList.filter(todo => todo.id !== payload.id),
+          error: null
+        };
+      } catch (err) {
+        return { ...prevState, error: err };
+      }
+    }
+    case UPDATE_TODO_STATUS_ACTION_TYPE: {
+      try {
+        const body = JSON.stringify(payload);
+        const config = { method: "PATCH", body, headers };
+        const resp = await fetch(`${api}/${payload.id}`, config).then((d) => d.json());
+        console.log(resp);
+        return {
+          todoList: prevState.todoList.map(todo => todo.id === payload.id ? resp : todo),
           error: null
         };
       } catch (err) {

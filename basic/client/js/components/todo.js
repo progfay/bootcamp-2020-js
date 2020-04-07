@@ -1,5 +1,8 @@
 import store from "../store.js";
-import { createDeleteTodoAction } from "../flux/index.js";
+import {
+  createDeleteTodoAction,
+  createUpdateTodoStatusAction
+} from "../flux/index.js";
 
 class Todo {
   constructor(parent, { id, name, done }) {
@@ -10,6 +13,16 @@ class Todo {
   }
 
   mount() {
+    this.element.querySelector('.todo-toggle').addEventListener(
+      'click',
+      event => {
+        store.dispatch(createUpdateTodoStatusAction({
+          id: this.props.id,
+          name: this.props.name,
+          done: !this.props.done
+        }));
+      }
+    );
     this.element.querySelector('.todo-remove-button').addEventListener(
       'click',
       event => {
