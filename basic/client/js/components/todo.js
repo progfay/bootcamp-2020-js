@@ -10,26 +10,35 @@ class Todo {
     this.element = document.createElement("li");
     this.element.className = "todo-item";
     this.props = { id, name, done };
+    this.toggleCheck = this.toggleCheck.bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
+  }
+
+  toggleCheck() {
+    store.dispatch(createUpdateTodoStatusAction({
+      id: this.props.id,
+      name: this.props.name,
+      done: !this.props.done
+    }));
+  }
+
+  deleteTodo() {
+    store.dispatch(createDeleteTodoAction({ id: this.props.id }));
+    this.unmount();
   }
 
   mount() {
     this.element.querySelector('.todo-toggle').addEventListener(
-      'click',
-      event => {
-        store.dispatch(createUpdateTodoStatusAction({
-          id: this.props.id,
-          name: this.props.name,
-          done: !this.props.done
-        }));
-      }
+      'click', this.toggleCheck
     );
     this.element.querySelector('.todo-remove-button').addEventListener(
-      'click',
-      event => {
-        store.dispatch(createDeleteTodoAction({ id: this.props.id }));
-      },
-      { once: true }
+      'click', this.deleteTodo, { once: true }
     );
+  }
+
+  unmount() {
+    this.element.querySelector('.todo-toggle').removeEventListener('click', this.toggleCheck);
+    this.element.querySelector('.todo-remove-button').removeEventListener('click', this.deleteTodo);
   }
 
   render() {
