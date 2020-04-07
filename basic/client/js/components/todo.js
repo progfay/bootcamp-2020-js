@@ -6,6 +6,17 @@ class Todo {
     this.props = { id, name, done };
   }
 
+  mount() {
+    this.element.querySelector('.todo-remove-button').addEventListener(
+      'click',
+      event => {
+        console.log(event.target.getAttribute('data-todo-id'))
+        store.dispatch(createAddTodoAction({ name: this.form.value }));
+      },
+      { once: true }
+    );
+  }
+
   render() {
     const { id, name, done } = this.props;
     this.element.innerHTML = `
@@ -23,6 +34,7 @@ class Todo {
       <div data-todo-id="${id}" class="todo-remove-button">x</div>
     `;
     this.parent.appendChild(this.element);
+    this.mount();
   }
 }
 
