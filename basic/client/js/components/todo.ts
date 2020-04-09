@@ -4,8 +4,19 @@ import {
   createUpdateTodoStatusAction
 } from "../flux/index.js";
 
+export type TodoPropsType = {
+  id: number,
+  name: string,
+  done: boolean
+}
+
 class Todo {
-  constructor(parent, { id, name, done }) {
+  parent: HTMLUListElement
+  element: HTMLLIElement | null
+  props: TodoPropsType
+
+
+  constructor(parent: HTMLUListElement, { id, name, done }: TodoPropsType) {
     this.parent = parent;
     this.element = document.createElement("li");
     this.element.className = "todo-item";
@@ -28,20 +39,35 @@ class Todo {
   }
 
   mount() {
-    this.element.querySelector('.todo-toggle').addEventListener(
-      'click', this.toggleCheck
-    );
-    this.element.querySelector('.todo-remove-button').addEventListener(
-      'click', this.deleteTodo, { once: true }
-    );
+    if (!this.element) return;
+
+    const todoToggle = this.element.querySelector('.todo-toggle')
+    if (todoToggle) {
+      todoToggle.addEventListener('click', this.toggleCheck);
+    }
+
+    const todoRemoveButton = this.element.querySelector('.todo-remove-button')
+    if (todoRemoveButton) {
+      todoRemoveButton.addEventListener('click', this.deleteTodo, { once: true });
+    }
   }
 
   unmount() {
-    this.element.querySelector('.todo-toggle').removeEventListener('click', this.toggleCheck);
-    this.element.querySelector('.todo-remove-button').removeEventListener('click', this.deleteTodo);
+    if (!this.element) return;
+
+    const todoToggle = this.element.querySelector('.todo-toggle')
+    if (todoToggle) {
+      todoToggle.removeEventListener('click', this.toggleCheck);
+    }
+
+    const todoRemoveButton = this.element.querySelector('.todo-remove-button')
+    if (todoRemoveButton) {
+      todoRemoveButton.removeEventListener('click', this.deleteTodo);
+    }
   }
 
   render() {
+    if (!this.element) return;
     const { id, name, done } = this.props;
     this.element.innerHTML = `
       <label class="todo-toggle__container">

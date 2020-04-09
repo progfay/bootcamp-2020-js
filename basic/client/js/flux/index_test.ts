@@ -2,15 +2,16 @@ import { test } from "../test/runner.js";
 import {
   createStore,
   createFetchTodoListAction,
-  createAddTodoAction
+  createAddTodoAction,
+  StateType
 } from "./index.js";
 
 function todo一覧を取得するアクションをdispatchしたときtodo一覧が更新される() {
-  const initialState = { todoList: [] };
+  const initialState: StateType = { todoList: [] };
   const store = createStore(initialState);
   store.dispatch(createFetchTodoListAction());
   store.subscribe(state => {
-    console.assert(initialState !== state.todoList);
+    console.assert(initialState.todoList !== state.todoList);
   });
 }
 

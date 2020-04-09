@@ -8,6 +8,10 @@ new TodoForm().mount();
 store.subscribe(state => {
   if (state.error == null) {
     const parent = document.querySelector(".todo-list__wrapper");
+    if (!parent) {
+      console.error(new Error('HTML Element ".todo-list__wrapper" is not found'));
+      return;
+    }
     new TodoList(parent, { todoList: state.todoList }).render();
   } else {
     console.error(state.error);

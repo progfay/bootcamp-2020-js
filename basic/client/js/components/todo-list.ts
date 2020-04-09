@@ -1,7 +1,16 @@
 import Todo from "./todo.js";
+import type { TodoPropsType } from "./todo";
+
+type TodoListPropsType= {
+  todoList: TodoPropsType[]
+};
 
 class TodoList {
-  constructor(parent, { todoList }) {
+  parent: Element;
+  element: HTMLUListElement;
+  props: TodoListPropsType;
+
+  constructor(parent: Element, { todoList }: TodoListPropsType) {
     this.parent = parent;
     this.element = document.createElement("ul");
     this.element.className = "todo-list";
