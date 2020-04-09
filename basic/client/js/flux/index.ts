@@ -21,7 +21,7 @@ type ActionBaseType<ActionType extends string, Payload> = {
   payload: Payload
 }
 
-const FETCH_TODO_ACTION_TYPE = "Fetch todo list from server";
+const FETCH_TODO_ACTION_TYPE = "Fetch todo list from server" as const;
 export type FetchTodoActionType = ActionBaseType<typeof FETCH_TODO_ACTION_TYPE, undefined>;
 export function createFetchTodoListAction(): FetchTodoActionType {
   return {
@@ -30,7 +30,7 @@ export function createFetchTodoListAction(): FetchTodoActionType {
   }
 };
 
-const ADD_TODO_ACTION_TYPE = "A todo addition to store";
+const ADD_TODO_ACTION_TYPE = "A todo addition to store" as const;
 type AddTodoActionPayloadType = { name: string };
 export type AddTodoActionType = ActionBaseType<typeof ADD_TODO_ACTION_TYPE, AddTodoActionPayloadType>;
 export function createAddTodoAction(todo: AddTodoActionPayloadType): AddTodoActionType {
@@ -40,7 +40,7 @@ export function createAddTodoAction(todo: AddTodoActionPayloadType): AddTodoActi
   }
 };
 
-const DELETE_TODO_ACTION_TYPE = "Delete todo from store";
+const DELETE_TODO_ACTION_TYPE = "Delete todo from store" as const;
 type DeleteTodoActionPayloadType = { id: number }
 export type DeleteTodoActionType = ActionBaseType<typeof DELETE_TODO_ACTION_TYPE, DeleteTodoActionPayloadType>;
 export function createDeleteTodoAction(payload: DeleteTodoActionPayloadType): DeleteTodoActionType {
@@ -50,7 +50,7 @@ export function createDeleteTodoAction(payload: DeleteTodoActionPayloadType): De
   }
 };
 
-const UPDATE_TODO_STATUS_ACTION_TYPE = "Update todo status";
+const UPDATE_TODO_STATUS_ACTION_TYPE = "Update todo status" as const;
 export type UpdateTodoStatusAction = ActionBaseType<typeof UPDATE_TODO_STATUS_ACTION_TYPE, TodoPropsType>;
 export function createUpdateTodoStatusAction(todo: TodoPropsType): UpdateTodoStatusAction {
   return {
@@ -59,7 +59,7 @@ export function createUpdateTodoStatusAction(todo: TodoPropsType): UpdateTodoSta
   }
 };
 
-const CLEAR_ERROR = "Clear error from state";
+const CLEAR_ERROR = "Clear error from state" as const;
 export type ClearErrorType = ActionBaseType<typeof CLEAR_ERROR, undefined>;
 export function clearError(): ClearErrorType {
   return {
