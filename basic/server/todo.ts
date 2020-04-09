@@ -22,6 +22,16 @@ class Todo {
   }
 }
 
+interface PatchTodoRequest extends Express.Request {
+  params: {
+    id: string
+  },
+  body: {
+    name?: string,
+    done?: boolean,
+  }
+}
+
 router.post("/", (req, res, next) => {
   const id = todoList.length ? todoList[todoList.length - 1].id + 1 : 0;
   const item = new Todo(id, req.body.name, false);
@@ -33,13 +43,13 @@ router.get("/", (req, res, next) => {
   return res.send({ todoList: todoList });
 });
 
-router.patch("/:id", (req, res, next) => {
+router.patch("/:id", (req: PatchTodoRequest, res, next) => {
   const id = parseInt(req.params.id, 10);
   const todo = todoList.find(todo => todo.id === id);
   if (!todo) return res.status(404).send();
   const { name, done } = req.body;
-  todo.name = name;
-  todo.done = done;
+  todo.name = name || todo.name;
+  todo.done = done || todo.done;
   return res.status(201).send(todo);
 });
 
