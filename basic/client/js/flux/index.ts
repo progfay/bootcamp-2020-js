@@ -98,7 +98,7 @@ const reducer = async (prevState: StateType, action: ActionType) => {
   switch (action.type) {
     case FETCH_TODO_ACTION_TYPE: {
       try {
-        const resp = await fetch(api).then((d) => d.json());
+        const resp: { todoList: TodoPropsType[] } = await fetch(api).then((d) => d.json());
         return { todoList: resp.todoList, error: null };
       } catch (err) {
         return { ...prevState, error: err as Error };
@@ -108,7 +108,7 @@ const reducer = async (prevState: StateType, action: ActionType) => {
       const body = JSON.stringify(action.payload);
       const config = { method: "POST", body, headers };
       try {
-        const resp = await fetch(api, config).then((d) => d.json());
+        const resp: TodoPropsType = await fetch(api, config).then((d) => d.json());
         return { todoList: [...prevState.todoList, resp], error: null };
       } catch (err) {
         return { ...prevState, error: err as Error };
@@ -129,8 +129,7 @@ const reducer = async (prevState: StateType, action: ActionType) => {
       try {
         const body = JSON.stringify(action.payload);
         const config = { method: "PATCH", body, headers };
-        const resp = await fetch(`${api}/${action.payload.id}`, config).then((d) => d.json());
-        console.log(resp);
+        const resp: TodoPropsType = await fetch(`${api}/${action.payload.id}`, config).then((d) => d.json());
         return {
           todoList: prevState.todoList.map(todo => todo.id === action.payload.id ? resp : todo),
           error: null
